@@ -1,0 +1,29 @@
+{
+  "name": "movie_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm install --save express"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeaPapadopoulos/movie_api.git"
+  },
+  "keywords": [
+    "npm",
+    "install",
+    "--save",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeaPapadopoulos/movie_api/issues"
+  },
+  "homepage": "https://github.com/LeaPapadopoulos/movie_api#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2"
+  }
+}
