@@ -51,6 +51,40 @@ app.get("/movies", (req, res) => {
   res.json(topMovies);
 });
 
+app.get("/movies/:title", (req, res) => {
+  res.send(
+    "Successful GET request returning data about a single movie by title"
+  );
+});
+
+app.get("/movies/genre/:title", (req, res) => {
+  res.send("Successful GET request return data about a genre by title");
+});
+
+app.get("/movies/director/:title", (req, res) => {
+  res.send("Successful GET request return data about a director by title");
+});
+
+app.post("/users/", (req, res) => {
+  res.send("User registered");
+});
+
+app.put("/users/:username", (req, res) => {
+  res.send("User info updated");
+});
+
+app.post("/users/favorites/:username", (req, res) => {
+  res.send("movie added to the list of favorites");
+});
+
+app.delete("/users/favorites/:username", (req, res) => {
+  res.send("movie removed from the list of favorites");
+});
+
+app.delete("/users/:username", (req, res) => {
+  res.send("Successful deregistration");
+});
+
 app.get("/", (req, res) => {
   res.send("Welcome to my movie club!");
 });
