@@ -1,5 +1,7 @@
 const express = require("express");
 morgan = require("morgan");
+fs = require("fs");
+path = require("path");
 
 const app = express();
 
@@ -7,40 +9,40 @@ app.use(morgan("common"));
 
 let topMovies = [
   {
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
+    title: "Amélie",
+    director: "Jean-Pierre Jeunet",
   },
   {
     title: "Lord of the Rings",
-    author: "J.R.R. Tolkien",
+    director: "Peter Jackson",
   },
   {
     title: "Twilight",
-    author: "Stephanie Meyer",
+    director: "Stephanie Meyer",
   },
   {
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
+    title: "Forrest Gump ",
+    director: "Robert Zemeckis",
   },
   {
-    title: "Lord of the Rings",
-    author: "J.R.R. Tolkien",
+    title: " The Matrix ",
+    director: "Wachowski",
   },
   {
-    title: "Twilight",
-    author: "Stephanie Meyer",
+    title: "Seven ",
+    director: "David Fincher",
   },
   {
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
+    title: "Star Wars",
+    director: "George Lucas",
   },
   {
-    title: "Lord of the Rings",
-    author: "J.R.R. Tolkien",
+    title: "Back to the Future",
+    director: "Robert Zemeckis",
   },
   {
-    title: "Twilight",
-    author: "Stephanie Meyer",
+    title: "WALL·E",
+    director: "Andrew Stanton",
   },
 ];
 
