@@ -1,5 +1,7 @@
 const bodyParser = require("body-parser");
 const express = require("express");
+const { check, validationResult } = require("express-validator");
+
 morgan = require("morgan");
 fs = require("fs");
 path = require("path");
@@ -11,6 +13,11 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); //bodyParser middle ware function
+
+const bcrypt = require("bcrypt");
+
+const cors = require("cors");
+app.use(cors());
 
 let auth = require("./auth")(app);
 
@@ -94,8 +101,22 @@ app.get(
 
 app.post(
   "/users",
-  passport.authenticate("jwt", { session: false }),
+  [
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("Password", "Password is required").not().isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail(),
+  ],
   (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({ username: req.body.Username })
       .then((user) => {
         if (user) {
@@ -103,7 +124,7 @@ app.post(
         } else {
           Users.create({
             username: req.body.Username,
-            password: req.body.Password,
+            password: hashedPassword,
             email: req.body.Email,
             Birthday: req.body.Birthday,
           })
@@ -156,14 +177,29 @@ app.get(
 
 app.put(
   "/users/:Username",
-  passport.authenticate("jwt", { session: false }),
+  [
+    check("Username", "Username is required").isLength({ min: 5 }),
+    check(
+      "Username",
+      "Username contains non alphanumeric characters - not allowed."
+    ).isAlphanumeric(),
+    check("Password", "Password is required").not().isEmpty(),
+    check("Email", "Email does not appear to be valid").isEmail(),
+  ],
+
   (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOneAndUpdate(
       { username: req.params.Username },
       {
         $set: {
           username: req.body.Username,
-          password: req.body.Password,
+          password: hashedPassword,
           email: req.body.Email,
           Birthday: req.body.Birth,
         },
@@ -261,7 +297,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-// listen for requests
-app.listen(8080, () => {
-  console.log("Your app is listening on port 8080.");
+const port = process.env.PORT || 8080;
+app.listen(port, "0.0.0.0", () => {
+  console.log("Listening on Port " + port);
 });
