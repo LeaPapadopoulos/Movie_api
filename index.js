@@ -27,10 +27,14 @@ require("./passport");
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect("mongodb://localhost:27017/MovieAppDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://LeaPapad:qLyFFTb7fLDy9cxC@movieappdb.pzcuotl.mongodb.net/MovieAppDB?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true }
+);
+// mongoose.connect("mongodb://localhost:27017/MovieAppDB", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
 app.use(morgan("common"));
 
