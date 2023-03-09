@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm install --save express",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "npm install --save express"
   },
   "repository": {
     "type": "git",
