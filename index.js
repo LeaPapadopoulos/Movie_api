@@ -27,14 +27,14 @@ require("./passport");
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect(process.env.CONNECTION_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-// mongoose.connect("mongodb://localhost:27017/MovieAppDB", {
+// mongoose.connect(process.env.CONNECTION_URI, {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
 // });
+mongoose.connect("mongodb://localhost:27017/MovieAppDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(morgan("common"));
 
@@ -225,7 +225,7 @@ app.delete(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Users.findOneAndRemove({ Username: req.params.Username })
+    Users.findOneAndRemove({ username: req.params.Username })
       .then((user) => {
         if (!user) {
           res.status(400).send(req.params.Username + "was not found");
