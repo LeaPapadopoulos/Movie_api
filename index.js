@@ -35,7 +35,6 @@ app.use(morgan("common"));
  * Home route
  * @name GET /
  * @function
- * @memberof module:index
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
