@@ -4,7 +4,7 @@ This is a backend application with APIs for a Movie database.
 
 # API Documentation
 
-A detailed API documentation avaiable [here] (https://mymovieapp.herokuapp.com/documentation)
+A detailed API documentation avaiable [here](https://mymovieapp.herokuapp.com/documentation)
 
 ## Description
 
