@@ -31,6 +31,7 @@
               <th>HTTP Method</th>
               <th>Request</th>
               <th>Response</th>
+              <th>Authentication</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +46,7 @@
                 String, }, Director: { Name: String, Bio: String, }, Actors:
                 [String], ImagePath: String, Featured: Boolean, }
               </td>
+              <td>JWT token (Bearer)</td>
             </tr>
             <tr>
               <td>Return data about a single movie by title</td>
@@ -57,80 +59,93 @@
                 String, }, Director: { Name: String, Bio: String, }, Actors:
                 [String], ImagePath: String, Featured: Boolean, }
               </td>
+              <td>JWT token (Bearer)</td>
             </tr>
             <tr>
               <td>Return data about a genre by title</td>
               <td>/movies/genre/:name</td>
               <td>GET</td>
-              <td>*title* string required</td>
+              <td>none</td>
               <td>
                 { Title: { type: String, required: true }, Description: { type:
                 String, required: true }, Genre: { Name: String, Description:
                 String, }, Director: { Name: String, Bio: String, }, Actors:
                 [String], ImagePath: String, Featured: Boolean, }
               </td>
+              <td>JWT token (Bearer)</td>
             </tr>
             <tr>
               <td>Return data about a director by title</td>
               <td>/movies/director/:title</td>
               <td>GET</td>
-              <td>Request</td>
+              <td>none</td>
               <td>
                 { Title: { type: String, required: true }, Description: { type:
                 String, required: true }, Genre: { Name: String, Description:
                 String, }, Director: { Name: String, Bio: String, }, Actors:
                 [String], ImagePath: String, Featured: Boolean, }
               </td>
+              <td>JWT token (Bearer)</td>
             </tr>
             <tr>
               <td>Users to registration</td>
               <td>/users/</td>
               <td>POST</td>
-              <td>Request</td>
+              <td>{username: "", password: "", email: "", Birthday: ""}</td>
               <td>
-                { Username: { type: String, required: true }, Password: { type:
-                String, required: true }, Email: { type: String, required: true
-                }, Birthday: Date, FavoriteMovies: [{ type:
-                mongoose.Schema.Types.ObjectId, ref: "Movie" }], }
+                {_id: "", username: "", password: "", email: "", Birthday: "",
+                FavoriteMovies: []}
               </td>
+              <td>none</td>
             </tr>
             <tr>
               <td>Update user info</td>
-              <td>/users/:username</td>
+              <td>/users/:Username</td>
               <td>PUT</td>
-              <td>Request</td>
+              <td>{username: "", password: "", email: "", Birthday: ""}</td>
               <td>
-                { Username: { type: String, required: true }, Password: { type:
-                String, required: true }, Email: { type: String, required: true
-                }, Birthday: Date, FavoriteMovies: [{ type:
-                mongoose.Schema.Types.ObjectId, ref: "Movie" }], }
+                {username: "", password: "", email: "", Birthday: "",
+                FavoriteMovies: []}
               </td>
+              <td>JWT token (Bearer)</td>
             </tr>
             <tr>
               <td>Add a movie to the list of favorites</td>
-              <td>/users/favorites/:username</td>
+              <td>/users/favorites/:Username/:MovieID</td>
               <td>POST</td>
-              <td>Request</td>
+              <td>none</td>
               <td>
-                { Username: { type: String, required: true }, Password: { type:
-                String, required: true }, Email: { type: String, required: true
-                }, Birthday: Date, FavoriteMovies: [{ type:
-                mongoose.Schema.Types.ObjectId, ref: "Movie" }], }
+                {username: "", password: "", email: "", Birthday: "",
+                FavoriteMovies: []}
               </td>
+              <td>JWT token (Bearer)</td>
             </tr>
             <tr>
               <td>Remove a movie from the list of favorites</td>
-              <td>/users/favorites/:username</td>
+              <td>/users/favorites/:Username/:MovieID</td>
               <td>DELETE</td>
-              <td>Request</td>
+              <td>none</td>
               <td>A message indicating the movie title has been removed</td>
+              <td>JWT token (Bearer)</td>
             </tr>
             <tr>
               <td>Allow existing users to deregister.</td>
-              <td>/users/:username</td>
+              <td>/users/:Username</td>
               <td>DELETE</td>
-              <td>Request</td>
+              <td>none</td>
               <td>A message indicating user has been removed</td>
+              <td>JWT token (Bearer)</td>
+            </tr>
+            <tr>
+              <td>Allow existing users to login.</td>
+              <td>/login</td>
+              <td>POST</td>
+              <td>{username: "", password: ""}</td>
+              <td>
+                {user: {_id: "", username: "", password: "", email: "",
+                Birthday: "", FavoriteMovies: []}, token: ""}
+              </td>
+              <td>Basic HTTP Authentication (username, password)</td>
             </tr>
           </tbody>
         </table>
