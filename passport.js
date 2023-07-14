@@ -1,18 +1,30 @@
-const passport = require("passport"),
-  LocalStrategy = require("passport-local").Strategy,
-  Models = require("./models.js"),
-  passportJWT = require("passport-jwt");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const Models = require("./models.js");
+const passportJWT = require("passport-jwt");
 
-let Users = Models.User,
-  JWTStrategy = passportJWT.Strategy,
-  ExtractJWT = passportJWT.ExtractJwt;
+let Users = Models.User;
+let JWTStrategy = passportJWT.Strategy;
+let ExtractJWT = passportJWT.ExtractJwt;
 
+/**
+ * Local strategy for authenticating users
+ * @name LocalStrategy
+ * @function
+ * @memberof module:passport
+ */
 passport.use(
   new LocalStrategy(
     {
       usernameField: "username",
       passwordField: "password",
     },
+    /**
+     * Authenticate user using username and password
+     * @param {string} username - User's username
+     * @param {string} password - User's password
+     * @param {Function} callback - Callback function
+     */
     (username, password, callback) => {
       console.log(username + "  " + password);
       Users.findOne({ username: username }, (error, user) => {
@@ -40,12 +52,23 @@ passport.use(
   )
 );
 
+/**
+ * JWT strategy for authenticating users
+ * @name JWTStrategy
+ * @function
+ * @memberof module:passport
+ */
 passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: "your_jwt_secret",
     },
+    /**
+     * Authenticate user using JWT token
+     * @param {Object} jwtPayload - JWT payload
+     * @param {Function} callback - Callback function
+     */
     (jwtPayload, callback) => {
       return Users.findById(jwtPayload._id)
         .then((user) => {

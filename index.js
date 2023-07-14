@@ -1,14 +1,11 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const { check, validationResult } = require("express-validator");
-
-morgan = require("morgan");
-fs = require("fs");
-path = require("path");
-
+const morgan = require("morgan");
+const fs = require("fs");
+const path = require("path");
 const mongoose = require("mongoose");
 const Models = require("./models.js");
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -31,33 +28,48 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-// mongoose.connect("mongodb://localhost:27017/MovieAppDB", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
 
 app.use(morgan("common"));
 
-// GET requests
+/**
+ * Home route
+ * @name GET /
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get("/", (req, res) => {
   res.send("Welcome to my Movie Club!");
 });
 
-app.get(
-  "/movies",
+/**
+ * Get all movies
+ * @name GET /movies
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
+app.get("/movies", (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error:" + err);
+    });
+});
 
-  (req, res) => {
-    Movies.find()
-      .then((movies) => {
-        res.status(201).json(movies);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error:" + err);
-      });
-  }
-);
-
+/**
+ * Get a movie by title
+ * @name GET /movies/:Title
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get(
   "/movies/:Title",
   passport.authenticate("jwt", { session: false }),
@@ -73,6 +85,14 @@ app.get(
   }
 );
 
+/**
+ * Get movies by genre
+ * @name GET /movies/genre/:Name
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get(
   "/movies/genre/:Name",
   passport.authenticate("jwt", { session: false }),
@@ -88,6 +108,14 @@ app.get(
   }
 );
 
+/**
+ * Get movies by director
+ * @name GET /movies/director/:Name
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get(
   "/movies/director/:Name",
   passport.authenticate("jwt", { session: false }),
@@ -103,13 +131,21 @@ app.get(
   }
 );
 
+/**
+ * Create a new user
+ * @name POST /users
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.post(
   "/users",
   [
     check("Username", "Username is required").isLength({ min: 5 }),
     check(
       "Username",
-      "Username contains non alphanumeric characters - not allowed."
+      "Username contains non-alphanumeric characters - not allowed."
     ).isAlphanumeric(),
     check("Password", "Password is required").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
@@ -148,6 +184,14 @@ app.post(
   }
 );
 
+/**
+ * Get all users
+ * @name GET /users
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
@@ -163,7 +207,14 @@ app.get(
   }
 );
 
-// Get a user by username
+/**
+ * Get a user by username
+ * @name GET /users/:Username
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -179,13 +230,21 @@ app.get(
   }
 );
 
+/**
+ * Update a user
+ * @name PUT /users/:Username
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.put(
   "/users/:Username",
   [
     check("Username", "Username is required").isLength({ min: 5 }),
     check(
       "Username",
-      "Username contains non alphanumeric characters - not allowed."
+      "Username contains non-alphanumeric characters - not allowed."
     ).isAlphanumeric(),
     check("Password", "Password is required").not().isEmpty(),
     check("Email", "Email does not appear to be valid").isEmail(),
@@ -221,6 +280,14 @@ app.put(
   }
 );
 
+/**
+ * Delete a user
+ * @name DELETE /users/:Username
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.delete(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -228,7 +295,7 @@ app.delete(
     Users.findOneAndRemove({ username: req.params.Username })
       .then((user) => {
         if (!user) {
-          res.status(400).send(req.params.Username + "was not found");
+          res.status(400).send(req.params.Username + " was not found");
         } else {
           res.status(200).send(req.params.Username + " was deleted");
         }
@@ -240,6 +307,14 @@ app.delete(
   }
 );
 
+/**
+ * Add a movie to a user's favorites
+ * @name POST /users/favorites/:Username/:MovieID
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.post(
   "/users/favorites/:Username/:MovieID",
   passport.authenticate("jwt", { session: false }),
@@ -256,7 +331,7 @@ app.post(
         } else {
           res
             .status(200)
-            .send("Movie with ID" + req.params.MovieID + " was added");
+            .send("Movie with ID " + req.params.MovieID + " was added");
         }
       })
       .catch((err) => {
@@ -266,6 +341,14 @@ app.post(
   }
 );
 
+/**
+ * Remove a movie from a user's favorites
+ * @name DELETE /users/favorites/:Username/:MovieID
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.delete(
   "/users/favorites/:Username/:MovieID",
   passport.authenticate("jwt", { session: false }),
@@ -282,7 +365,7 @@ app.delete(
         } else {
           res
             .status(200)
-            .send("Movie with ID" + req.params.MovieID + " was deleted");
+            .send("Movie with ID " + req.params.MovieID + " was deleted");
         }
       })
       .catch((err) => {
@@ -292,10 +375,28 @@ app.delete(
   }
 );
 
+/**
+ * Documentation route
+ * @name GET /documentation
+ * @function
+ * @memberof module:index
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ */
 app.get("/documentation", (req, res) => {
   res.sendFile("public/documentation.html", { root: __dirname });
 });
 
+/**
+ * Error handling middleware
+ * @name Error Middleware
+ * @function
+ * @memberof module:index
+ * @param {Object} err - Error object
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Next middleware function
+ */
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");

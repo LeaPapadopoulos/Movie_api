@@ -1,10 +1,15 @@
 const jwtSecret = "your_jwt_secret"; // This has to be the same key used in the JWTStrategy
 
-const jwt = require("jsonwebtoken"),
-  passport = require("passport");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
 require("./passport"); // Your local passport file
 
+/**
+ * Generates a JWT token for a user
+ * @param {Object} user - User object
+ * @returns {string} JWT token
+ */
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.username, // This is the username you’re encoding in the JWT
@@ -13,7 +18,13 @@ let generateJWTToken = (user) => {
   });
 };
 
-/* POST login. */
+/**
+ * Login route
+ * @name POST /login
+ * @function
+ * @memberof module:auth
+ * @param {Object} router - Express router object
+ */
 module.exports = (router) => {
   router.post("/login", (req, res) => {
     passport.authenticate("local", { session: false }, (error, user, info) => {
