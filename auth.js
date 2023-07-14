@@ -19,10 +19,29 @@ let generateJWTToken = (user) => {
 };
 
 /**
- * Login route
+ * @description Login route
  * @name POST /login
  * @function
- * @memberof module:auth
+ * @example
+ * // Request data format
+ * {
+ *   "username": "example_username",
+ *   "password": "example_password"
+ * }
+ * @example
+ * // Response data format
+ * {
+ *   "user": {
+ *     "_id": "user_id",
+ *     "username": "example_username",
+ *     "password": "example_password",
+ *     "email": "example_email@example.com",
+ *     "Birthday": "1990-01-01",
+ *     "FavoriteMovies": ["movie_id1", "movie_id2"]
+ *   },
+ *   "token": "example_token"
+ * }
+ * @param {authentication} authentication - Basic HTTP authentication (Username, Password)
  * @param {Object} router - Express router object
  */
 module.exports = (router) => {
