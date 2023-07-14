@@ -69,18 +69,22 @@ app.get("/", (req, res) => {
  *     "Featured": Boolean,
  *   }
  * ]
- * @param {authentication} - Bearen token (JWT)
+ * @param {authentication} - Bearer token (JWT)
  */
-app.get("/movies", (req, res) => {
-  Movies.find()
-    .then((movies) => {
-      res.status(201).json(movies);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send("Error:" + err);
-    });
-});
+app.get(
+  "/movies",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.find()
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error:" + err);
+      });
+  }
+);
 
 /**
  * @description Get movie by title
@@ -106,7 +110,7 @@ app.get("/movies", (req, res) => {
  *     "ImagePath": "",
  *     "Featured": Boolean,
  *   }
- * @param {authentication} - Bearen token (JWT)
+ * @param {authentication} - Bearer token (JWT)
  */
 app.get(
   "/movies/:Title",
@@ -136,7 +140,7 @@ app.get(
  *       "Name": "",
  *       "Description": "",
  *     }
- * @param {authentication} - Bearen token (JWT)
+ * @param {authentication} - Bearer token (JWT)
  */
 app.get(
   "/movies/genre/:Name",
@@ -166,7 +170,7 @@ app.get(
  *       "Name": "",
  *       "Bio": "",
  *     }
- * @param {authentication} - Bearen token (JWT)
+ * @param {authentication} - Bearer token (JWT)
  */
 app.get(
   "/movies/director/:Name",
@@ -304,7 +308,7 @@ app.get(
  *  "Birthday": "",
  *  "FavoriteMovies": []
  * }
- * @param {authentication} - Bearen token (JWT)
+ * @param {authentication} - Bearer token (JWT)
  */
 app.put(
   "/users/:Username",
@@ -396,7 +400,7 @@ app.delete(
  *  "Birthday": "",
  *  "FavoriteMovies": []
  * }
- * @param {authentication} - Bearen token (JWT)
+ * @param {authentication} - Bearer token (JWT)
  */
 app.post(
   "/users/favorites/:Username/:MovieID",
