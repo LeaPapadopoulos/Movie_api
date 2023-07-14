@@ -2,6 +2,10 @@
 
 This is a backend application with APIs for a Movie database.
 
+# API Documentation
+
+A detailed API documentation avaiable [here] (https://mymovieapp.herokuapp.com/documentation)
+
 ## Description
 
 This application provides APIs to manage movies and user information for a movie database. It allows you to perform operations such as retrieving movies, adding users, updating user details, and managing user favorites.
