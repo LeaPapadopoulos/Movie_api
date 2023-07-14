@@ -83,31 +83,30 @@ app.get("/movies", (req, res) => {
 });
 
 /**
- * Get a movie by title
+ * @description Get movie by title
  * @name GET /movies/:Title
  * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} Movie object
+ * @example
+ * // Request data format
+ * none
+ * @example
  * // Response data format
- * [
  *   {
- *     "Genre": {
- *       "Name": ""
- *   },
- *  "Director": {
- *        "Name": ""
- *    },
- *    "Actors": [],
- *    "_id": "",
- *    "Title": "",
- *    "Description": "",
- *    "ImagePath": "",
- *   "Featured": Boolean
+ *     "Title": "",
+ *     "Description": "",
+ *       "Genre": {
+ *       "Name": "",
+ *       "Description": "",
+ *     },
+ *     "Director": {
+ *       "Name": "",
+ *       "Bio": "",
+ *     },
+ *     "Actors": [""],
+ *     "ImagePath": "",
+ *     "Featured": Boolean,
  *   }
- * ]
- * @throws {Error} If there is an error while retrieving the movie
+ * @param {authentication} - Bearen token (JWT)
  */
 app.get(
   "/movies/:Title",
@@ -125,14 +124,19 @@ app.get(
 );
 
 /**
- * Get movies by genre
+ * @description Get genre by name
  * @name GET /movies/genre/:Name
  * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} Movie object
- * @throws {Error} If there is an error while retrieving the movie
+ * @example
+ * // Request data format
+ * none
+ * @example
+ * // Response data format
+ *     {
+ *       "Name": "",
+ *       "Description": "",
+ *     }
+ * @param {authentication} - Bearen token (JWT)
  */
 app.get(
   "/movies/genre/:Name",
@@ -150,14 +154,19 @@ app.get(
 );
 
 /**
- * Get movies by genre
- * @name GET /movies/genre/:Name
+ * @description Get genre by name
+ * @name GET /movies/director/:Name
  * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} Movie object
- * @throws {Error} If there is an error while retrieving the movie
+ * @example
+ * // Request data format
+ * none
+ * @example
+ * // Response data format
+ *     {
+ *       "Name": "",
+ *       "Bio": "",
+ *     }
+ * @param {authentication} - Bearen token (JWT)
  */
 app.get(
   "/movies/director/:Name",
@@ -175,14 +184,28 @@ app.get(
 );
 
 /**
- * Create a new user
+ * @description Create a new user
  * @name POST /users
  * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} Created user object
- * @throws {Error} If there is an error while creating the user
+ * @example
+ * // Request data format
+ * {
+ *  "username": "",
+ *  "password": "",
+ *  "email": "",
+ *  "Birthday:" ""
+ * }
+ * @example
+ * // Response data format
+ * {
+ *  "_id": "",
+ *  "username": "",
+ *  "password": "",
+ *  "email": "",
+ *  "Birthday": "",
+ *  "FavoriteMovies": []
+ * }
+ * @param {authentication} - None
  */
 app.post(
   "/users",
@@ -229,17 +252,6 @@ app.post(
   }
 );
 
-/**
- * Get all users
- * @name GET /users
- * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object[]} Array of user objects
- * @throws {Error} If there is an error while retrieving the users
- */
-
 app.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
@@ -255,16 +267,6 @@ app.get(
   }
 );
 
-/**
- * Get a user by username
- * @name GET /users/:Username
- * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} User object
- * @throws {Error} If there is an error while retrieving the user
- */
 app.get(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -347,13 +349,16 @@ app.put(
 );
 
 /**
- * Delete a user
- * @name DELETE /users/:Username
+ * @description Delete a user
+ * @name Delete /users/:Username
  * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @throws {Error} If there is an error while deleting the user
+ * @example
+ * // Request data format
+ * none
+ * @example
+ * // Response data format
+ * Success/Failure Text message
+ * @param {authentication} - Bearer Token (JWT)
  */
 app.delete(
   "/users/:Username",
@@ -375,13 +380,23 @@ app.delete(
 );
 
 /**
- * Add a movie to a user's favorites
+ * @description Add favorite movie to user's list
  * @name POST /users/favorites/:Username/:MovieID
  * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @throws {Error} If there is an error while adding the movie to the user's favorites
+ * @example
+ * // Request data format
+ * none
+ * @example
+ * // Response data format
+ * {
+ *  "_id": "",
+ *  "username": "",
+ *  "password": "",
+ *  "email": "",
+ *  "Birthday": "",
+ *  "FavoriteMovies": []
+ * }
+ * @param {authentication} - Bearen token (JWT)
  */
 app.post(
   "/users/favorites/:Username/:MovieID",
@@ -410,14 +425,16 @@ app.post(
 );
 
 /**
-/**
- * Remove a movie from a user's favorites
- * @name DELETE /users/favorites/:Username/:MovieID
+ * @description Delete favorite movie from user's list
+ * @name Delete /users/favorites/:Username/:MovieID
  * @function
- * @memberof module:index
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @throws {Error} If there is an error while removing the movie from the user's favorites
+ * @example
+ * // Request data format
+ * none
+ * @example
+ * // Response data format
+ * Success/Failure Text message
+ * @param {authentication} - Bearer Token (JWT)
  */
 app.delete(
   "/users/favorites/:Username/:MovieID",
@@ -446,10 +463,9 @@ app.delete(
 );
 
 /**
- * Documentation route
+ * Documentation.html route
  * @name GET /documentation
  * @function
- * @memberof module:index
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  */
@@ -461,7 +477,6 @@ app.get("/documentation", (req, res) => {
  * Error handling middleware
  * @name Error Middleware
  * @function
- * @memberof module:index
  * @param {Object} err - Error object
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
